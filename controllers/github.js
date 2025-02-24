@@ -8,7 +8,7 @@ export const getGithubUser = async (req, res, next) => {
       return res.status(400).json({ message: "Username is required" })
     }
 
-    const response = await axios.get(`https://api.github.com/users/${username}`, {
+    const response = await axios.get(`https://api.github.com/users/${username}/events`, {
       headers: {
         Accept: "application/vnd.github.v3+json",
       },
@@ -18,7 +18,7 @@ export const getGithubUser = async (req, res, next) => {
   } catch (error) {
     if (axios.isAxiosError(error)) {
       if (error.response?.status === 404) {
-        return res.status(404).json({ message: "GitHub user not found" })
+        return res.status(404).json({ message: "GitHub user is invalid" })
       }
       console.error("Error getting GitHub user:", error.response?.data || error.message)
       return res.status(error.response?.status || 500).json({
